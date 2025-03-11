@@ -1,6 +1,6 @@
 
 import { create } from 'zustand';
-import { Match, Prediction, Team, UserStats } from './types';
+import { Match, Prediction, Team, UserStats, MatchAnalysis } from './types';
 import { persist } from 'zustand/middleware';
 
 interface AppState {
@@ -21,11 +21,16 @@ interface AppState {
   // Teams
   allTeams: Team[];
   setAllTeams: (teams: Team[]) => void;
+
+  // Match Analysis
+  matchAnalyses: Record<string, MatchAnalysis>;
+  setMatchAnalysis: (homeTeamId: string, awayTeamId: string, analysis: MatchAnalysis) => void;
+  getMatchAnalysis: (homeTeamId: string, awayTeamId: string) => MatchAnalysis | null;
 }
 
 export const useAppStore = create<AppState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       // Initial User Stats
       userStats: {
         totalPredictions: 0,
@@ -168,6 +173,19 @@ export const useAppStore = create<AppState>()(
         },
       ],
       setAllTeams: (teams) => set({ allTeams: teams }),
+
+      // Match Analysis
+      matchAnalyses: {},
+      setMatchAnalysis: (homeTeamId, awayTeamId, analysis) => set((state) => ({
+        matchAnalyses: {
+          ...state.matchAnalyses,
+          [`${homeTeamId}-${awayTeamId}`]: analysis
+        }
+      })),
+      getMatchAnalysis: (homeTeamId, awayTeamId) => {
+        const state = get();
+        return state.matchAnalyses[`${homeTeamId}-${awayTeamId}`] || null;
+      }
     }),
     {
       name: 'match-prediction-storage',
