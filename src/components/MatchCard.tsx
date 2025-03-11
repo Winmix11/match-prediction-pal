@@ -1,4 +1,3 @@
-
 import React, { useState, useCallback } from "react";
 import { Clock, Timer, Trophy, Shield, ChevronDown, ArrowRight, Star, Check, X } from "lucide-react";
 import { useAppStore } from "@/lib/store";
