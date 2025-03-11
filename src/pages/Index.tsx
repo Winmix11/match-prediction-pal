@@ -24,7 +24,7 @@ const Index = () => {
     // Show welcome toast
     if (userStats.totalPredictions === 0) {
       toast({
-        title: "Welcome to MatchPredict",
+        title: "Welcome to WinMix.hu",
         description: "Make your first prediction to earn points!",
         duration: 5000,
       });
@@ -161,11 +161,11 @@ const Index = () => {
                   <Trophy className="h-3 w-3 text-blue-400" />
                 </div>
               </div>
-              <span className="text-sm font-medium text-white">Match<span className="text-blue-400">Predict</span></span>
+              <span className="text-sm font-medium text-white">Win<span className="text-blue-400">Mix.hu</span></span>
             </div>
             
             <p className="text-xs text-gray-500">
-              &copy; {new Date().getFullYear()} MatchPredict. All rights reserved.
+              &copy; {new Date().getFullYear()} WinMix.hu. All rights reserved.
             </p>
           </div>
         </div>

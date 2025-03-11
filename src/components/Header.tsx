@@ -48,7 +48,7 @@ const Header = () => {
               <Trophy className="h-4 w-4 text-blue-400" />
             </div>
           </div>
-          <h1 className="text-lg font-semibold tracking-tight text-white">Match<span className="text-blue-400">Predict</span></h1>
+          <h1 className="text-lg font-semibold tracking-tight text-white">Win<span className="text-blue-400">Mix.hu</span></h1>
         </div>
 
         <div className="flex items-center gap-4">
