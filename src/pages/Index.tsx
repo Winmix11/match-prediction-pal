@@ -5,6 +5,7 @@ import { Trophy, Timer, Calendar, ChevronLeft, ChevronRight } from 'lucide-react
 import Header from '@/components/Header';
 import MatchCard from '@/components/MatchCard';
 import UserStats from '@/components/UserStats';
+import ActionsDropdown from '@/components/ActionsDropdown';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 
@@ -77,6 +78,17 @@ const Index = () => {
           )}
         >
           <UserStats />
+        </div>
+
+        <div className="mb-8 flex justify-end">
+          <div 
+            className={cn(
+              "transition-all duration-700 delay-300",
+              showAnimation ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+            )}
+          >
+            <ActionsDropdown />
+          </div>
         </div>
         
         <div className="mb-8">
