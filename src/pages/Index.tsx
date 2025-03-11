@@ -1,13 +1,15 @@
 
 import React, { useEffect, useState } from 'react';
 import { useAppStore } from '@/lib/store';
-import { Trophy, Timer, Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Trophy, Timer, Calendar, ChevronLeft, ChevronRight, FileText } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import Header from '@/components/Header';
 import MatchCard from '@/components/MatchCard';
 import UserStats from '@/components/UserStats';
 import ActionsDropdown from '@/components/ActionsDropdown';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
 
 const Index = () => {
   const matches = useAppStore((state) => state.matches);
@@ -80,7 +82,21 @@ const Index = () => {
           <UserStats />
         </div>
 
-        <div className="mb-8 flex justify-end">
+        <div className="mb-8 flex justify-between items-center">
+          <div 
+            className={cn(
+              "transition-all duration-700 delay-300",
+              showAnimation ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+            )}
+          >
+            <Link to="/html-export">
+              <Button variant="outline" size="sm" className="flex items-center gap-2">
+                <FileText className="h-4 w-4" />
+                HTML Export
+              </Button>
+            </Link>
+          </div>
+          
           <div 
             className={cn(
               "transition-all duration-700 delay-300",
