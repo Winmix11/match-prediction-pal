@@ -1,3 +1,4 @@
+
 import React, { useState, useCallback } from "react";
 import { Clock, Timer, Trophy, Shield, ChevronDown, ArrowRight, Star, Check, X } from "lucide-react";
 import { useAppStore } from "@/lib/store";
@@ -19,18 +20,19 @@ const formLabels: Record<TeamFormItem, string> = {
 };
 
 const formColors: Record<TeamFormItem, string> = {
-  W: "bg-green-500/20 text-green-400",
-  D: "bg-yellow-500/20 text-yellow-400",
+  W: "bg-sports-green/20 text-sports-green",
+  D: "bg-sports-accent/20 text-sports-accent",
   L: "bg-red-500/20 text-red-400",
-  G: "bg-blue-500/20 text-blue-400",
-  Y: "bg-yellow-500/20 text-yellow-400",
-  V: "bg-green-500/20 text-green-400",
+  G: "bg-sports-blue/20 text-sports-blue",
+  Y: "bg-sports-accent/20 text-sports-accent",
+  V: "bg-sports-green/20 text-sports-green",
 };
 
 const MatchCard = ({ match }: MatchCardProps) => {
   const [selectedPrediction, setSelectedPrediction] = useState<string | null>(null);
   const [homeTeamDropdownOpen, setHomeTeamDropdownOpen] = useState(false);
   const [awayTeamDropdownOpen, setAwayTeamDropdownOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { id, time, timeGMT, startsIn, homeTeam, awayTeam, selectableTeams = false } = match;
 
@@ -92,9 +94,9 @@ const MatchCard = ({ match }: MatchCardProps) => {
         <span className="text-white text-sm font-medium">{team.name}</span>
         {renderTeamForm(team.form)}
         {team.rank && (
-          <div className="absolute top-2 right-2 flex items-center gap-1 bg-blue-500/10 px-2 py-0.5 rounded">
-            <Shield className="w-3 h-3 text-blue-400" />
-            <span className="text-[10px] font-medium text-blue-300">#{team.rank}</span>
+          <div className="absolute top-2 right-2 flex items-center gap-1 bg-sports-blue/10 px-2 py-0.5 rounded">
+            <Shield className="w-3 h-3 text-sports-blue" />
+            <span className="text-[10px] font-medium text-sports-blue">{team.rank}</span>
           </div>
         )}
       </div>
@@ -117,47 +119,50 @@ const MatchCard = ({ match }: MatchCardProps) => {
   const submitPrediction = () => {
     if (!homeTeam || !awayTeam || !selectedPrediction) return;
 
+    setIsSubmitting(true);
+
     // Add prediction to store
-    addPrediction({
-      matchId: id,
-      homeTeam,
-      awayTeam,
-      prediction: selectedPrediction as "home" | "draw" | "away",
-    });
+    setTimeout(() => {
+      addPrediction({
+        matchId: id,
+        homeTeam,
+        awayTeam,
+        prediction: selectedPrediction as "home" | "draw" | "away",
+      });
 
-    // Update user stats
-    updateUserStats({
-      totalPredictions: userStats.totalPredictions + 1,
-    });
+      // Update user stats
+      updateUserStats({
+        totalPredictions: userStats.totalPredictions + 1,
+      });
 
-    // Show toast notification
-    toast({
-      title: "Prediction Saved",
-      description: `Your prediction for ${homeTeam.name} vs ${awayTeam.name} has been saved.`,
-      duration: 3000,
-    });
+      // Show toast notification
+      toast({
+        title: "Prediction Saved",
+        description: `Your prediction for ${homeTeam.name} vs ${awayTeam.name} has been saved.`,
+        duration: 3000,
+      });
 
-    // Reset selected prediction
-    setSelectedPrediction(null);
+      // Reset selected prediction
+      setSelectedPrediction(null);
+      setIsSubmitting(false);
+    }, 800); // Simulate API call
   };
 
   return (
-    <div className="glass-card p-6 transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/5 animate-fade-in">
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-purple-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-
+    <div className="match-card">
       <div className="flex items-center justify-between mb-5 relative">
-        <div className="flex items-center gap-3">
-          <span className="text-sm font-semibold text-blue-400 bg-blue-500/10 px-3 py-1 rounded-full">Match {id}</span>
-          <div className="px-2 py-0.5 rounded text-xs font-medium bg-blue-500/20 text-blue-400">
+        <div className="flex items-center gap-2 sm:gap-3">
+          <span className="text-xs sm:text-sm font-semibold text-sports-blue bg-sports-blue/10 px-2 sm:px-3 py-0.5 sm:py-1 rounded-full">Match {id}</span>
+          <div className="px-2 py-0.5 rounded text-xs font-medium bg-sports-blue/20 text-sports-blue">
             <span className="flex items-center gap-1.5">
               <Timer className="w-3 h-3" />
-              Starts in {startsIn}
+              <span className="hidden sm:inline">Starts in</span> {startsIn}
             </span>
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <Clock className="w-4 h-4 text-blue-400" />
-          <span className="text-xs font-medium text-blue-300">{timeGMT}</span>
+          <Clock className="w-4 h-4 text-sports-blue" />
+          <span className="text-xs font-medium text-sports-blue">{timeGMT}</span>
         </div>
       </div>
 
@@ -165,22 +170,25 @@ const MatchCard = ({ match }: MatchCardProps) => {
         <div className="grid grid-cols-5 gap-2 items-center">
           <div className="col-span-2">
             <label className="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-300 mb-3 bg-white/5 px-2 py-1 rounded-md">
-              <Trophy className="w-3.5 h-3.5 text-amber-400" />
+              <Trophy className="w-3.5 h-3.5 text-sports-accent" />
               Home Team
             </label>
-            <div className="relative aspect-[1/1] overflow-hidden rounded-lg p-3 bg-gradient-to-b from-gray-800/50 to-gray-900/50 flex items-center justify-center transition-all duration-300 border border-blue-500/20 shadow-lg shadow-blue-500/5">
+            <div className="relative aspect-[1/1] overflow-hidden rounded-lg p-3 bg-gradient-to-b from-gray-800/50 to-gray-900/50 flex items-center justify-center transition-all duration-300 border border-sports-blue/20 shadow-lg shadow-sports-blue/5">
               {renderTeamContent(homeTeam, "home")}
             </div>
           </div>
 
           <div className="col-span-1 flex flex-col items-center justify-center py-4">
-            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500/10 to-purple-500/10 flex items-center justify-center border border-white/10 mb-2">
+            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-sports-blue/10 to-sports-green/10 flex items-center justify-center border border-white/10 mb-2">
               <span className="text-white/70 font-bold text-sm">VS</span>
             </div>
 
             <div className="flex gap-1.5 mt-1">
               <button
-                className={`w-2 h-2 rounded-full transition-all duration-200 ${selectedPrediction === "home" ? "bg-blue-500" : "bg-white/20 hover:bg-white/30"}`}
+                className={cn(
+                  "w-2 h-2 rounded-full transition-all duration-200",
+                  selectedPrediction === "home" ? "bg-sports-blue" : "bg-white/20 hover:bg-white/30"
+                )}
                 onClick={() => setSelectedPrediction("home")}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" || e.key === " ") {
@@ -194,12 +202,18 @@ const MatchCard = ({ match }: MatchCardProps) => {
                 aria-label={`Prediction: ${homeTeam?.name || "Home"} win`}
               />
               <button
-                className={`w-2 h-2 rounded-full transition-all duration-200 ${selectedPrediction === "draw" ? "bg-blue-500" : "bg-white/20 hover:bg-white/30"}`}
+                className={cn(
+                  "w-2 h-2 rounded-full transition-all duration-200",
+                  selectedPrediction === "draw" ? "bg-sports-blue" : "bg-white/20 hover:bg-white/30"
+                )}
                 onClick={() => setSelectedPrediction("draw")}
                 aria-label="Predict draw"
               />
               <button
-                className={`w-2 h-2 rounded-full transition-all duration-200 ${selectedPrediction === "away" ? "bg-blue-500" : "bg-white/20 hover:bg-white/30"}`}
+                className={cn(
+                  "w-2 h-2 rounded-full transition-all duration-200",
+                  selectedPrediction === "away" ? "bg-sports-blue" : "bg-white/20 hover:bg-white/30"
+                )}
                 onClick={() => setSelectedPrediction("away")}
                 aria-label="Predict away win"
               />
@@ -208,10 +222,10 @@ const MatchCard = ({ match }: MatchCardProps) => {
 
           <div className="col-span-2">
             <label className="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-300 mb-3 bg-white/5 px-2 py-1 rounded-md">
-              <Trophy className="w-3.5 h-3.5 text-amber-400" />
+              <Trophy className="w-3.5 h-3.5 text-sports-accent" />
               Away Team
             </label>
-            <div className="relative aspect-[1/1] overflow-hidden rounded-lg p-3 bg-gradient-to-b from-gray-800/50 to-gray-900/50 flex items-center justify-center transition-all duration-300 border border-blue-500/20 shadow-lg shadow-blue-500/5">
+            <div className="relative aspect-[1/1] overflow-hidden rounded-lg p-3 bg-gradient-to-b from-gray-800/50 to-gray-900/50 flex items-center justify-center transition-all duration-300 border border-sports-blue/20 shadow-lg shadow-sports-blue/5">
               {renderTeamContent(awayTeam, "away")}
             </div>
           </div>
@@ -221,7 +235,7 @@ const MatchCard = ({ match }: MatchCardProps) => {
           <div className="grid grid-cols-5 gap-4">
             <div className="col-span-2 relative">
               <button
-                className="flex items-center justify-between w-full px-4 py-2 text-sm bg-gradient-to-r from-blue-500/10 to-blue-600/10 hover:from-blue-500/20 hover:to-blue-600/20 border border-blue-500/20 rounded-lg text-white transition-all duration-300"
+                className="flex items-center justify-between w-full px-4 py-2 text-sm bg-gradient-to-r from-sports-blue/10 to-sports-blue/10 hover:from-sports-blue/20 hover:to-sports-blue/20 border border-sports-blue/20 rounded-lg text-white transition-all duration-300"
                 onClick={() => setHomeTeamDropdownOpen(!homeTeamDropdownOpen)}
               >
                 {homeTeam ? (
@@ -239,18 +253,21 @@ const MatchCard = ({ match }: MatchCardProps) => {
                   "Select home team"
                 )}
                 <ChevronDown
-                  className={`w-4 h-4 transition-transform duration-300 ${homeTeamDropdownOpen ? "rotate-180" : ""}`}
+                  className={cn(
+                    "w-4 h-4 transition-transform duration-300",
+                    homeTeamDropdownOpen ? "rotate-180" : ""
+                  )}
                 />
               </button>
               
               {/* Dropdown for home team */}
               {homeTeamDropdownOpen && (
-                <div className="absolute z-10 mt-1 w-full bg-gray-800 border border-blue-500/20 rounded-lg shadow-lg shadow-blue-500/10 backdrop-blur-sm animate-fade-in-fast">
+                <div className="absolute z-10 mt-1 w-full bg-gray-800 border border-sports-blue/20 rounded-lg shadow-lg shadow-sports-blue/10 backdrop-blur-sm animate-fade-in-fast">
                   <div className="max-h-48 overflow-y-auto py-1">
                     {allTeams.map((team) => (
                       <button
                         key={team.id}
-                        className="flex items-center gap-2 w-full px-4 py-2 text-sm text-white hover:bg-blue-500/10 transition-colors duration-200"
+                        className="flex items-center gap-2 w-full px-4 py-2 text-sm text-white hover:bg-sports-blue/10 transition-colors duration-200"
                         onClick={() => handleTeamSelect(team, "home")}
                       >
                         <img
@@ -272,7 +289,7 @@ const MatchCard = ({ match }: MatchCardProps) => {
 
             <div className="col-span-2 relative">
               <button
-                className="flex items-center justify-between w-full px-4 py-2 text-sm bg-gradient-to-r from-blue-500/10 to-blue-600/10 hover:from-blue-500/20 hover:to-blue-600/20 border border-blue-500/20 rounded-lg text-white transition-all duration-300"
+                className="flex items-center justify-between w-full px-4 py-2 text-sm bg-gradient-to-r from-sports-blue/10 to-sports-blue/10 hover:from-sports-blue/20 hover:to-sports-blue/20 border border-sports-blue/20 rounded-lg text-white transition-all duration-300"
                 onClick={() => setAwayTeamDropdownOpen(!awayTeamDropdownOpen)}
               >
                 {awayTeam ? (
@@ -290,18 +307,21 @@ const MatchCard = ({ match }: MatchCardProps) => {
                   "Select away team"
                 )}
                 <ChevronDown
-                  className={`w-4 h-4 transition-transform duration-300 ${awayTeamDropdownOpen ? "rotate-180" : ""}`}
+                  className={cn(
+                    "w-4 h-4 transition-transform duration-300",
+                    awayTeamDropdownOpen ? "rotate-180" : ""
+                  )}
                 />
               </button>
               
               {/* Dropdown for away team */}
               {awayTeamDropdownOpen && (
-                <div className="absolute z-10 mt-1 w-full bg-gray-800 border border-blue-500/20 rounded-lg shadow-lg shadow-blue-500/10 backdrop-blur-sm animate-fade-in-fast">
+                <div className="absolute z-10 mt-1 w-full bg-gray-800 border border-sports-blue/20 rounded-lg shadow-lg shadow-sports-blue/10 backdrop-blur-sm animate-fade-in-fast">
                   <div className="max-h-48 overflow-y-auto py-1">
                     {allTeams.map((team) => (
                       <button
                         key={team.id}
-                        className="flex items-center gap-2 w-full px-4 py-2 text-sm text-white hover:bg-blue-500/10 transition-colors duration-200"
+                        className="flex items-center gap-2 w-full px-4 py-2 text-sm text-white hover:bg-sports-blue/10 transition-colors duration-200"
                         onClick={() => handleTeamSelect(team, "away")}
                       >
                         <img
@@ -325,78 +345,95 @@ const MatchCard = ({ match }: MatchCardProps) => {
           <div className="grid grid-cols-3 gap-2 mt-3">
             <button
               className={cn(
-                "px-3 py-2 rounded-lg text-xs font-medium flex items-center justify-center gap-1.5 transition-all duration-200",
+                "prediction-btn",
                 existingPrediction?.prediction === "home" 
-                  ? "bg-blue-600 text-white" 
+                  ? "prediction-btn-active" 
                   : selectedPrediction === "home"
-                  ? "bg-blue-600 text-white" 
-                  : "bg-white/5 text-gray-300 hover:bg-white/10"
+                  ? "prediction-btn-active" 
+                  : "prediction-btn-inactive"
               )}
-              onClick={() => setSelectedPrediction("home")}
+              onClick={() => !existingPrediction && setSelectedPrediction("home")}
+              disabled={!!existingPrediction}
             >
               {homeTeam?.name || "Home"} Win
               {existingPrediction?.prediction === "home" && (
-                <Check className="w-3 h-3 text-white ml-1" />
+                <Check className="w-3 h-3 text-white inline-block ml-1" />
               )}
             </button>
             <button
               className={cn(
-                "px-3 py-2 rounded-lg text-xs font-medium flex items-center justify-center gap-1.5 transition-all duration-200",
+                "prediction-btn",
                 existingPrediction?.prediction === "draw" 
-                  ? "bg-blue-600 text-white" 
+                  ? "prediction-btn-active" 
                   : selectedPrediction === "draw"
-                  ? "bg-blue-600 text-white" 
-                  : "bg-white/5 text-gray-300 hover:bg-white/10"
+                  ? "prediction-btn-active" 
+                  : "prediction-btn-inactive"
               )}
-              onClick={() => setSelectedPrediction("draw")}
+              onClick={() => !existingPrediction && setSelectedPrediction("draw")}
+              disabled={!!existingPrediction}
             >
               Draw
               {existingPrediction?.prediction === "draw" && (
-                <Check className="w-3 h-3 text-white ml-1" />
+                <Check className="w-3 h-3 text-white inline-block ml-1" />
               )}
             </button>
             <button
               className={cn(
-                "px-3 py-2 rounded-lg text-xs font-medium flex items-center justify-center gap-1.5 transition-all duration-200",
+                "prediction-btn",
                 existingPrediction?.prediction === "away" 
-                  ? "bg-blue-600 text-white" 
+                  ? "prediction-btn-active" 
                   : selectedPrediction === "away"
-                  ? "bg-blue-600 text-white" 
-                  : "bg-white/5 text-gray-300 hover:bg-white/10"
+                  ? "prediction-btn-active" 
+                  : "prediction-btn-inactive"
               )}
-              onClick={() => setSelectedPrediction("away")}
+              onClick={() => !existingPrediction && setSelectedPrediction("away")}
+              disabled={!!existingPrediction}
             >
               {awayTeam?.name || "Away"} Win
               {existingPrediction?.prediction === "away" && (
-                <Check className="w-3 h-3 text-white ml-1" />
+                <Check className="w-3 h-3 text-white inline-block ml-1" />
               )}
             </button>
           </div>
         )}
       </div>
 
-      <div className="pt-6">
+      <div className="pt-6 mt-auto">
         <button
           className={cn(
             "inline-flex items-center justify-center gap-2 w-full px-4 py-3",
             "rounded-lg font-medium text-sm transition-all duration-300",
             "relative overflow-hidden",
-            canPredict && selectedPrediction
-              ? "bg-blue-600 hover:bg-blue-700 text-white group"
+            canPredict && selectedPrediction && !existingPrediction
+              ? "bg-sports-blue hover:bg-sports-blue-dark text-white group"
+              : existingPrediction 
+              ? "bg-sports-green text-white cursor-default"
               : "bg-gray-800 text-gray-400 cursor-not-allowed"
           )}
-          disabled={!canPredict || !selectedPrediction || existingPrediction !== undefined}
+          disabled={!canPredict || !selectedPrediction || existingPrediction !== undefined || isSubmitting}
           onClick={submitPrediction}
         >
           <span className="absolute inset-0 overflow-hidden rounded-lg">
             <span className="absolute left-0 top-0 h-full w-1/3 bg-gradient-to-r from-transparent via-white/10 to-transparent transform -translate-x-full animate-shine opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
           </span>
-          {existingPrediction 
-            ? "Prediction Submitted" 
-            : "Predict Match"}
-          {existingPrediction 
-            ? <Check className="w-4 h-4" />
-            : <ArrowRight className="w-4 h-4" />}
+          {isSubmitting ? (
+            <>
+              <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              Submitting...
+            </>
+          ) : (
+            <>
+              {existingPrediction 
+                ? "Prediction Submitted" 
+                : "Predict Match"}
+              {existingPrediction 
+                ? <Check className="w-4 h-4" />
+                : <ArrowRight className="w-4 h-4" />}
+            </>
+          )}
         </button>
       </div>
     </div>
