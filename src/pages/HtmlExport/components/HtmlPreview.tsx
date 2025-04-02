@@ -17,6 +17,7 @@ const HtmlPreview = ({ htmlContent }: HtmlPreviewProps) => {
           sandbox="allow-same-origin allow-scripts"
         ></iframe>
       </div>
+      <p className="text-xs text-muted-foreground mt-2">Az exportált HTML oldal tartalmazza az összes szükséges CSS és JavaScript elemet a megfelelő működéshez.</p>
     </div>
   );
 };

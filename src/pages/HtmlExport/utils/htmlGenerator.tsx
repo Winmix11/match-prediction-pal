@@ -31,25 +31,28 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
         }
         
         :root {
-            --background: #0b0f19;
-            --foreground: #f1f5f9;
-            --card: #111827;
-            --card-foreground: #f1f5f9;
+            /* A React oldalon használt Tailwind változók pontos másolata */
+            --background: hsl(220 33% 4%);
+            --foreground: hsl(210 40% 98%);
+            --card: hsl(220 33% 5.5%);
+            --card-foreground: hsl(210 40% 98%);
             --border: rgba(255, 255, 255, 0.1);
-            --primary: #3b82f6;
-            --primary-hover: #2563eb;
-            --secondary: rgba(30, 41, 59, 0.5);
-            --muted: rgba(51, 65, 85, 0.5);
-            --muted-foreground: #94a3b8;
-            --accent: rgba(59, 130, 246, 0.2);
-            --accent-foreground: #60a5fa;
-            --destructive: #f43f5e;
-            --destructive-foreground: #f1f5f9;
-            --radius: 0.5rem;
-            --sports-blue: #3b82f6;
-            --sports-blue-dark: #2563eb;
+            --primary: hsl(196 94% 48%);
+            --primary-hover: hsl(196 94% 40%);
+            --secondary: hsl(156 64% 40%);
+            --muted: hsl(220 20% 12%);
+            --muted-foreground: hsl(210 20% 70%);
+            --accent: hsl(35 92% 50%);
+            --accent-foreground: hsl(210 40% 98%);
+            --destructive: hsl(0 84.2% 60.2%);
+            --destructive-foreground: hsl(210 40% 98%);
+            --radius: 0.75rem;
+            --sports-blue: #0ea5e9;
+            --sports-blue-dark: #0284c7;
             --sports-green: #10b981;
-            --sports-accent: #fbbf24;
+            --sports-green-dark: #059669;
+            --sports-accent: #f59e0b;
+            --sports-accent-dark: #d97706;
             --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         }
         
@@ -68,7 +71,7 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(ellipse at top, rgba(59, 130, 246, 0.15), rgba(16, 185, 129, 0.05), transparent);
+            background: radial-gradient(ellipse at top, rgba(14, 165, 233, 0.15), rgba(16, 185, 129, 0.05), transparent);
             z-index: 0;
             pointer-events: none;
         }
@@ -222,7 +225,7 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
             z-index: 10;
         }
         
-        /* Header */
+        /* Header - frissítve a React oldal stílusának megfelelően */
         header {
             padding: 1rem 0;
             background-color: rgba(11, 15, 25, 0.8);
@@ -314,9 +317,9 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
             background-color: var(--sports-blue-dark);
         }
         
-        /* Főtartalom */
+        /* Főtartalom - frissítve a React design alapján */
         main {
-            padding-top: 8rem;
+            padding-top: 5rem;
             padding-bottom: 4rem;
             position: relative;
             z-index: 1;
@@ -331,6 +334,12 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
         
         .hero h1 {
             margin-bottom: 1rem;
+            font-size: 2.25rem;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--foreground) 0%, var(--sports-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
         }
         
         .hero p {
@@ -340,7 +349,7 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
             margin: 0 auto 2rem;
         }
         
-        /* Statisztika kártya */
+        /* Statisztika kártya - frissítve */
         .stats-card {
             margin-bottom: 3rem;
             opacity: 0;
@@ -371,7 +380,7 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
             font-size: 2rem;
             font-weight: 700;
             margin-bottom: 0.5rem;
-            color: var(--foreground);
+            color: var(--primary);
         }
         
         .stat-label {
@@ -380,7 +389,41 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
             font-weight: 500;
         }
         
-        /* Mérkőzések */
+        /* Mérkőzések - Frissítve a React komponensek designja alapján */
+        .sports-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: var(--radius);
+            background: linear-gradient(to bottom right, rgba(17, 24, 39, 0.9), rgba(17, 24, 39, 0.95));
+            border: 1px solid rgba(14, 165, 233, 0.2);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .sports-card:hover {
+            border-color: rgba(14, 165, 233, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .sports-card-glow {
+            position: relative;
+        }
+        
+        .sports-card-glow::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: var(--radius);
+            box-shadow: 0 0 30px 10px rgba(14, 165, 233, 0.05);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        .sports-card:hover .sports-card-glow::after {
+            opacity: 1;
+        }
+        
         .actions-row {
             display: flex;
             justify-content: space-between;
@@ -417,7 +460,7 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
         }
         
         .action-button-blue:hover {
-            background-color: rgba(59, 130, 246, 0.1);
+            background-color: rgba(14, 165, 233, 0.1);
         }
         
         .action-button-green {
@@ -486,7 +529,7 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
             background-color: rgba(51, 65, 85, 0.8);
         }
         
-        /* Mérkőzés kártyák */
+        /* Mérkőzés kártyák - frissítve a React komponensek alapján */
         .matches-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -499,16 +542,18 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
             background-color: var(--card);
             border-radius: var(--radius);
             overflow: hidden;
-            border: 1px solid var(--border);
+            border: 1px solid rgba(14, 165, 233, 0.2);
             transition: all 0.3s ease;
             height: 100%;
             display: flex;
             flex-direction: column;
+            min-height: 480px;
+            padding: 0;
         }
         
         .match-card:hover {
             transform: translateY(-5px);
-            border-color: rgba(255, 255, 255, 0.2);
+            border-color: rgba(14, 165, 233, 0.3);
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
         }
         
@@ -543,6 +588,8 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
         .match-content {
             padding: 1.5rem 1rem;
             flex: 1;
+            display: flex;
+            flex-direction: column;
         }
         
         .teams-container {
@@ -561,13 +608,13 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
         }
         
         .team-logo {
-            width: 3.5rem;
-            height: 3.5rem;
+            width: 4rem;
+            height: 4rem;
             margin-bottom: 0.75rem;
             object-fit: contain;
             border-radius: 50%;
             background-color: rgba(255, 255, 255, 0.05);
-            padding: 0.375rem;
+            padding: 0.5rem;
             transition: transform 0.3s ease;
         }
         
@@ -618,6 +665,7 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
             display: flex;
             justify-content: space-between;
             gap: 0.75rem;
+            margin-top: auto;
         }
         
         .match-button {
@@ -634,12 +682,12 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
         }
         
         .home-button {
-            background-color: var(--accent);
-            color: var(--accent-foreground);
+            background-color: rgba(14, 165, 233, 0.2);
+            color: var(--sports-blue);
         }
         
         .home-button:hover {
-            background-color: rgba(59, 130, 246, 0.3);
+            background-color: rgba(14, 165, 233, 0.3);
         }
         
         .draw-button {
@@ -682,7 +730,7 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
             }
         }
         
-        /* Lábléc */
+        /* Lábléc - frissítve */
         footer {
             padding: 1.5rem 0;
             border-top: 1px solid var(--border);
@@ -719,7 +767,7 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
             color: var(--muted-foreground);
         }
         
-        /* Responsive */
+        /* Responsive design - frissítve */
         @media (max-width: 768px) {
             .matches-grid {
                 grid-template-columns: 1fr;
@@ -738,12 +786,16 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
             }
             
             .hero h1 {
-                font-size: 2rem;
+                font-size: 1.75rem;
             }
             
             .actions-row {
                 flex-direction: column;
                 align-items: flex-start;
+            }
+            
+            .match-card {
+                min-height: 400px;
             }
         }
         
@@ -761,11 +813,15 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
             }
             
             .hero h1 {
-                font-size: 1.75rem;
+                font-size: 1.5rem;
             }
             
             .hero p {
                 font-size: 1rem;
+            }
+            
+            .match-card {
+                padding: 0.75rem;
             }
         }
     </style>
@@ -792,7 +848,7 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
             <div class="nav-items">
                 <a href="#matches" class="nav-item">Mérkőzések</a>
                 <a href="#features" class="nav-item">Funkciók</a>
-                <a href="#cta" class="nav-item">Indulás</a>
+                <a href="#leaderboard" class="nav-item">Ranglista</a>
             </div>
             
             <button class="auth-button">
@@ -816,26 +872,26 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
                         <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
                         <circle cx="12" cy="7" r="4"></circle>
                     </svg>
-                    Bejelentkezés / Regisztráció
+                    Bejelentkezés kezdéshez
                 </button>
             </section>
 
             <section class="stats-card">
                 <div class="stats-grid">
                     <div class="stat-item">
-                        <div class="stat-value">${stats.totalPredictions}</div>
+                        <div class="stat-value">${stats.totalPredictions || 0}</div>
                         <div class="stat-label">Összes tipp</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-value">${stats.winRate}%</div>
+                        <div class="stat-value">${stats.winRate || 0}%</div>
                         <div class="stat-label">Nyerési arány</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-value">${stats.points}</div>
+                        <div class="stat-value">${stats.points || 0}</div>
                         <div class="stat-label">Összes pont</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-value">${stats.streak}</div>
+                        <div class="stat-value">${stats.streak || 0}</div>
                         <div class="stat-label">Jelenlegi sorozat</div>
                     </div>
                 </div>
@@ -877,12 +933,9 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
                 <div class="action-buttons">
                     <button class="action-button">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M8 3v3a2 2 0 0 1-2 2H3"></path>
-                            <path d="M21 8h-3a2 2 0 0 1-2-2V3"></path>
-                            <path d="M3 16h3a2 2 0 0 1 2 2v3"></path>
-                            <path d="M16 21v-3a2 2 0 0 1 2-2h3"></path>
+                            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
                         </svg>
-                        Egyéb műveletek
+                        Szűrés
                     </button>
                 </div>
             </section>
@@ -923,85 +976,71 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
                                 <path d="m9 18 6-6-6-6"></path>
                             </svg>
                         </button>
-                        
-                        <div class="date-display">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <polyline points="12 6 12 12 16 14"></polyline>
-                            </svg>
-                            GMT
-                        </div>
-                        
-                        <button class="action-button">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
-                            </svg>
-                            Szűrés
-                        </button>
                     </div>
                 </div>
 
                 <div class="matches-grid">
-                    ${matches.map(match => `
-                    <div class="match-card">
-                        <div class="match-header">
-                            <div class="match-time">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                </svg>
-                                ${match.time}
-                            </div>
-                            <div class="match-time-tag">
-                                ${match.startsIn}
-                            </div>
-                        </div>
-                        <div class="match-content">
-                            <div class="teams-container">
-                                ${match.homeTeam ? `
-                                <div class="team">
-                                    <img src="${match.homeTeam.logo}" alt="${match.homeTeam.name}" class="team-logo">
-                                    <div class="team-name">${match.homeTeam.name}</div>
-                                    <div class="team-rank">
-                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                                        </svg>
-                                        Rank #${match.homeTeam.rank}
-                                    </div>
-                                </div>
-                                ` : ''}
-                                <div class="vs">VS</div>
-                                ${match.awayTeam ? `
-                                <div class="team">
-                                    <img src="${match.awayTeam.logo}" alt="${match.awayTeam.name}" class="team-logo">
-                                    <div class="team-name">${match.awayTeam.name}</div>
-                                    <div class="team-rank">
-                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                                        </svg>
-                                        Rank #${match.awayTeam.rank}
-                                    </div>
-                                </div>
-                                ` : ''}
-                            </div>
-                            <div class="match-actions">
-                                <button class="match-button home-button">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
-                                        <path d="m9 18 6-6-6-6"></path>
-                                    </svg>
-                                    Hazai
-                                </button>
-                                <button class="match-button draw-button">Döntetlen</button>
-                                <button class="match-button away-button">
-                                    Vendég
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle; margin-left: 4px;">
-                                        <path d="m9 18 6-6-6-6"></path>
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    `).join('')}
+                    ${matches.map(match => {
+                      const homeTeam = match.homeTeam || { name: 'Ismeretlen csapat', logo: '/placeholder.svg', rank: '?' };
+                      const awayTeam = match.awayTeam || { name: 'Ismeretlen csapat', logo: '/placeholder.svg', rank: '?' };
+                      
+                      return `
+                      <div class="match-card sports-card sports-card-glow">
+                          <div class="match-header">
+                              <div class="match-time">
+                                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                      <circle cx="12" cy="12" r="10"></circle>
+                                      <polyline points="12 6 12 12 16 14"></polyline>
+                                  </svg>
+                                  ${match.time || '15:00'}
+                              </div>
+                              <div class="match-time-tag">
+                                  ${match.startsIn || 'Hamarosan'}
+                              </div>
+                          </div>
+                          <div class="match-content">
+                              <div class="teams-container">
+                                  <div class="team">
+                                      <img src="${homeTeam.logo}" alt="${homeTeam.name}" class="team-logo">
+                                      <div class="team-name">${homeTeam.name}</div>
+                                      <div class="team-rank">
+                                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                          </svg>
+                                          ${homeTeam.rank ? `Rank #${homeTeam.rank}` : 'Nincs rangsor'}
+                                      </div>
+                                  </div>
+                                  <div class="vs">VS</div>
+                                  <div class="team">
+                                      <img src="${awayTeam.logo}" alt="${awayTeam.name}" class="team-logo">
+                                      <div class="team-name">${awayTeam.name}</div>
+                                      <div class="team-rank">
+                                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                          </svg>
+                                          ${awayTeam.rank ? `Rank #${awayTeam.rank}` : 'Nincs rangsor'}
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="match-actions">
+                                  <button class="match-button home-button">
+                                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+                                          <path d="m9 18 6-6-6-6"></path>
+                                      </svg>
+                                      Hazai
+                                  </button>
+                                  <button class="match-button draw-button">Döntetlen</button>
+                                  <button class="match-button away-button">
+                                      Vendég
+                                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle; margin-left: 4px;">
+                                          <path d="m9 18 6-6-6-6"></path>
+                                      </svg>
+                                  </button>
+                              </div>
+                          </div>
+                      </div>
+                      `;
+                    }).join('')}
                 </div>
             </section>
         </div>
@@ -1020,7 +1059,7 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
                         <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path>
                     </svg>
                 </div>
-                <span>Win<span style="color: #3b82f6;">Mix.hu</span></span>
+                <span>Win<span style="color: #0ea5e9;">Mix.hu</span></span>
             </div>
             
             <p class="copyright">
@@ -1030,64 +1069,75 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
     </footer>
 
     <script>
-        // Egyszerű header scroll hatás
-        const header = document.getElementById('header');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 10) {
-                header.classList.add('header-scrolled');
-            } else {
-                header.classList.remove('header-scrolled');
-            }
-        });
-        
-        // Mérkőzés gombok kezelése
-        const matchButtons = document.querySelectorAll('.match-button');
-        matchButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const card = this.closest('.match-card');
-                const allButtons = card.querySelectorAll('.match-button');
-                
-                // Reset all buttons
-                allButtons.forEach(btn => {
-                    btn.style.opacity = '0.7';
-                    btn.style.transform = 'scale(1)';
+        // Egyszerű funkciók a jobb felhasználói élményért
+        document.addEventListener('DOMContentLoaded', () => {
+            // Header stílus változtatás görgetéskor
+            const header = document.getElementById('header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 10) {
+                    header.style.backgroundColor = 'rgba(11, 15, 25, 0.95)';
+                    header.style.borderBottomColor = 'rgba(255, 255, 255, 0.1)';
+                } else {
+                    header.style.backgroundColor = 'rgba(11, 15, 25, 0.8)';
+                }
+            });
+            
+            // Mérkőzés gombok kezelése
+            const matchButtons = document.querySelectorAll('.match-button');
+            matchButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const card = this.closest('.match-card');
+                    const allButtons = card.querySelectorAll('.match-button');
+                    
+                    // Alaphelyzetbe állítjuk az összes gombot
+                    allButtons.forEach(btn => {
+                        btn.style.opacity = '0.7';
+                        btn.style.transform = 'scale(1)';
+                    });
+                    
+                    // Kiemeljük a kiválasztott gombot
+                    this.style.opacity = '1';
+                    this.style.transform = 'scale(1.05)';
+                    
+                    // Felhasználói visszajelzés toast formájában
+                    showToast('Tipp rögzítve', 'success');
                 });
-                
-                // Kiemelt gomb
-                this.style.opacity = '1';
-                this.style.transform = 'scale(1.05)';
-                
-                // Tipp mentés szimuláció
-                const prediction = this.classList.contains('home-button') ? 'Hazai' : 
-                                  this.classList.contains('draw-button') ? 'Döntetlen' : 'Vendég';
-                                  
-                // Felhasználói visszajelzés
+            });
+            
+            // Toast üzenet megjelenítés
+            function showToast(message, type = 'info') {
                 const toast = document.createElement('div');
-                toast.textContent = 'Tipp elmentve: ' + prediction;
+                toast.textContent = message;
                 toast.style.position = 'fixed';
                 toast.style.bottom = '20px';
                 toast.style.right = '20px';
                 toast.style.padding = '10px 20px';
-                toast.style.backgroundColor = 'var(--sports-blue)';
+                toast.style.backgroundColor = type === 'success' ? 'var(--sports-blue)' : 'var(--sports-accent)';
                 toast.style.color = 'white';
                 toast.style.borderRadius = 'var(--radius)';
                 toast.style.zIndex = '1000';
-                toast.style.animation = 'fadeIn 0.3s forwards';
+                toast.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(10px)';
+                toast.style.transition = 'opacity 0.3s, transform 0.3s';
                 
                 document.body.appendChild(toast);
                 
                 setTimeout(() => {
+                    toast.style.opacity = '1';
+                    toast.style.transform = 'translateY(0)';
+                }, 10);
+                
+                setTimeout(() => {
                     toast.style.opacity = '0';
                     toast.style.transform = 'translateY(10px)';
-                    toast.style.transition = 'opacity 0.3s, transform 0.3s';
                     setTimeout(() => {
                         document.body.removeChild(toast);
                     }, 300);
                 }, 3000);
-            });
+            }
         });
     </script>
 </body>
 </html>`;
 };
-
