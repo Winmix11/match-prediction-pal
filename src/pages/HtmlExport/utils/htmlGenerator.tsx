@@ -23,7 +23,7 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
-        /* Reset and base styles */
+        /* Reset és alapstílusok */
         * {
             margin: 0;
             padding: 0;
@@ -46,6 +46,10 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
             --destructive: #f43f5e;
             --destructive-foreground: #f1f5f9;
             --radius: 0.5rem;
+            --sports-blue: #3b82f6;
+            --sports-blue-dark: #2563eb;
+            --sports-green: #10b981;
+            --sports-accent: #fbbf24;
             --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         }
         
@@ -54,12 +58,22 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
             line-height: 1.6;
             color: var(--foreground);
             background-color: var(--background);
-            background-image: radial-gradient(ellipse at top, rgba(59, 130, 246, 0.2), rgba(17, 24, 39, 0.05), transparent);
             min-height: 100vh;
             overflow-x: hidden;
         }
         
-        /* Typography */
+        .bg-gradient {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at top, rgba(59, 130, 246, 0.15), rgba(16, 185, 129, 0.05), transparent);
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        /* Tipográfia */
         h1, h2, h3, h4, h5, h6 {
             font-weight: 700;
             line-height: 1.2;
@@ -91,7 +105,7 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
             color: var(--primary-hover);
         }
         
-        /* Container */
+        /* Konténer */
         .container {
             width: 100%;
             max-width: 1200px;
@@ -99,7 +113,7 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
             padding: 0 1rem;
         }
         
-        /* Animations */
+        /* Animációk */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -109,31 +123,103 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
             animation: fadeIn 0.5s ease forwards;
         }
         
-        /* Utilities */
+        /* Segédosztályok */
         .text-center {
             text-align: center;
         }
         
-        .text-gradient {
-            background: linear-gradient(to right, var(--foreground), #93c5fd);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .text-blue {
+            color: var(--sports-blue);
         }
         
-        .text-blue {
-            color: var(--primary);
+        .text-green {
+            color: var(--sports-green);
         }
         
         .bg-card {
             background-color: var(--card);
             border-radius: var(--radius);
             border: 1px solid var(--border);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
         }
         
-        .shadow-soft {
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        .flex {
+            display: flex;
+        }
+        
+        .flex-col {
+            flex-direction: column;
+        }
+        
+        .items-center {
+            align-items: center;
+        }
+        
+        .justify-between {
+            justify-content: space-between;
+        }
+        
+        .gap-2 {
+            gap: 0.5rem;
+        }
+        
+        .gap-4 {
+            gap: 1rem;
+        }
+        
+        .mb-3 {
+            margin-bottom: 0.75rem;
+        }
+        
+        .mb-6 {
+            margin-bottom: 1.5rem;
+        }
+        
+        .mb-8 {
+            margin-bottom: 2rem;
+        }
+        
+        .mb-12 {
+            margin-bottom: 3rem;
+        }
+        
+        .mt-6 {
+            margin-top: 1.5rem;
+        }
+        
+        .mx-auto {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .py-6 {
+            padding-top: 1.5rem;
+            padding-bottom: 1.5rem;
+        }
+        
+        .py-8 {
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+        }
+        
+        .px-4 {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+        
+        .pt-28 {
+            padding-top: 7rem;
+        }
+        
+        .pb-16 {
+            padding-bottom: 4rem;
+        }
+        
+        .relative {
+            position: relative;
+        }
+        
+        .z-10 {
+            z-index: 10;
         }
         
         /* Header */
@@ -148,12 +234,6 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
             right: 0;
             z-index: 100;
             border-bottom: 1px solid var(--border);
-            transition: all 0.3s ease;
-        }
-        
-        .header-scrolled {
-            padding: 0.75rem 0;
-            background-color: rgba(11, 15, 25, 0.9);
         }
         
         .header-content {
@@ -172,7 +252,7 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
         }
         
         .logo-icon {
-            background: linear-gradient(to bottom right, var(--primary), #4f46e5);
+            background: linear-gradient(to bottom right, var(--sports-blue), var(--sports-green));
             width: 2rem;
             height: 2rem;
             border-radius: 0.5rem;
@@ -215,44 +295,38 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
             background-color: var(--muted);
         }
         
-        .profile-button {
+        .auth-button {
             display: flex;
             align-items: center;
             gap: 0.5rem;
             padding: 0.5rem 0.75rem;
-            background-color: var(--muted);
+            background-color: var(--sports-blue);
             border-radius: var(--radius);
             transition: background-color 0.2s ease;
             font-size: 0.875rem;
             font-weight: 500;
             color: var(--foreground);
             cursor: pointer;
+            border: none;
         }
         
-        .profile-button:hover {
-            background-color: rgba(51, 65, 85, 0.7);
+        .auth-button:hover {
+            background-color: var(--sports-blue-dark);
         }
         
-        .avatar {
-            width: 1.5rem;
-            height: 1.5rem;
-            border-radius: 50%;
-            background-color: var(--primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        /* Main content */
+        /* Főtartalom */
         main {
-            padding: 8rem 0 4rem;
+            padding-top: 8rem;
+            padding-bottom: 4rem;
             position: relative;
+            z-index: 1;
         }
         
         .hero {
             text-align: center;
             margin-bottom: 4rem;
-            animation: fadeIn 0.8s ease forwards;
+            opacity: 0;
+            animation: fadeIn 0.7s forwards;
         }
         
         .hero h1 {
@@ -266,29 +340,11 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
             margin: 0 auto 2rem;
         }
         
-        /* Stats card */
+        /* Statisztika kártya */
         .stats-card {
             margin-bottom: 3rem;
-            animation: fadeIn 1s ease 0.2s both;
-        }
-        
-        .stats-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-        
-        .stats-header h2 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .stats-header h2 svg {
-            color: var(--primary);
+            opacity: 0;
+            animation: fadeIn 0.7s ease 0.2s forwards;
         }
         
         .stats-grid {
@@ -324,9 +380,54 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
             font-weight: 500;
         }
         
-        /* Matches */
-        .matches-section {
-            animation: fadeIn 1.2s ease 0.4s both;
+        /* Mérkőzések */
+        .actions-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .action-button {
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--foreground);
+        }
+        
+        .action-button-blue {
+            color: var(--sports-blue);
+            border-color: var(--sports-blue);
+            border-opacity: 0.2;
+        }
+        
+        .action-button-blue:hover {
+            background-color: rgba(59, 130, 246, 0.1);
+        }
+        
+        .action-button-green {
+            color: var(--sports-green);
+            border-color: var(--sports-green);
+            border-opacity: 0.2;
+        }
+        
+        .action-button-green:hover {
+            background-color: rgba(16, 185, 129, 0.1);
         }
         
         .matches-header {
@@ -342,10 +443,17 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            color: var(--foreground);
         }
         
         .matches-title svg {
-            color: #fbbf24;
+            color: var(--sports-accent);
+        }
+        
+        .date-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
         
         .date-display {
@@ -359,14 +467,32 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
         }
         
         .date-display svg {
-            color: var(--primary);
+            color: var(--sports-blue);
         }
         
-        /* Match cards */
+        .date-button {
+            width: 2rem;
+            height: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--muted);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        
+        .date-button:hover {
+            background-color: rgba(51, 65, 85, 0.8);
+        }
+        
+        /* Mérkőzés kártyák */
         .matches-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 1.5rem;
+            opacity: 0;
+            animation: fadeIn 0.7s ease 0.4s forwards;
         }
         
         .match-card {
@@ -375,6 +501,9 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
             overflow: hidden;
             border: 1px solid var(--border);
             transition: all 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
         }
         
         .match-card:hover {
@@ -396,22 +525,24 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
             display: flex;
             align-items: center;
             gap: 0.375rem;
+            font-size: 0.875rem;
         }
         
         .match-time svg {
-            color: var(--primary);
+            color: var(--sports-blue);
         }
         
         .match-time-tag {
             background-color: var(--accent);
             color: var(--accent-foreground);
-            padding: 0.125rem 0.5rem;
+            padding: 0.25rem 0.5rem;
             border-radius: 0.25rem;
             font-size: 0.75rem;
         }
         
         .match-content {
             padding: 1.5rem 1rem;
+            flex: 1;
         }
         
         .teams-container {
@@ -430,8 +561,8 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
         }
         
         .team-logo {
-            width: 4rem;
-            height: 4rem;
+            width: 3.5rem;
+            height: 3.5rem;
             margin-bottom: 0.75rem;
             object-fit: contain;
             border-radius: 50%;
@@ -446,13 +577,13 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
         
         .team-name {
             font-weight: 600;
-            font-size: 1rem;
+            font-size: 0.875rem;
             margin-bottom: 0.25rem;
         }
         
         .team-rank {
             color: var(--muted-foreground);
-            font-size: 0.875rem;
+            font-size: 0.75rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -529,126 +660,34 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
             background-color: rgba(99, 102, 241, 0.3);
         }
         
-        /* Features */
-        .features-section {
-            padding: 4rem 0;
-            animation: fadeIn 1.4s ease 0.6s both;
-        }
-        
-        .features-header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-        
-        .features-header h2 {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-        }
-        
-        .features-header p {
-            font-size: 1.125rem;
-            color: var(--muted-foreground);
-            max-width: 700px;
-            margin: 0 auto;
-        }
-        
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-        }
-        
-        .feature-card {
-            padding: 2rem;
-            background-color: var(--card);
+        /* Skeleton loaders */
+        .skeleton {
+            background: linear-gradient(
+                90deg,
+                rgba(255, 255, 255, 0.05) 25%,
+                rgba(255, 255, 255, 0.1) 50%,
+                rgba(255, 255, 255, 0.05) 75%
+            );
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
             border-radius: var(--radius);
-            border: 1px solid var(--border);
-            transition: transform 0.3s ease, border-color 0.3s ease;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
         }
         
-        .feature-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary);
+        @keyframes shimmer {
+            0% {
+                background-position: -200% 0;
+            }
+            100% {
+                background-position: 200% 0;
+            }
         }
         
-        .feature-icon {
-            background-color: var(--accent);
-            width: 3rem;
-            height: 3rem;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1.5rem;
-        }
-        
-        .feature-icon svg {
-            color: var(--primary);
-            width: 1.5rem;
-            height: 1.5rem;
-        }
-        
-        .feature-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 0.75rem;
-        }
-        
-        .feature-description {
-            color: var(--muted-foreground);
-            flex: 1;
-        }
-        
-        /* CTA Section */
-        .cta-section {
-            padding: 5rem 0;
-            text-align: center;
-            animation: fadeIn 1.6s ease 0.8s both;
-        }
-        
-        .cta-content {
-            max-width: 700px;
-            margin: 0 auto;
-        }
-        
-        .cta-content h2 {
-            font-size: 2.5rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .cta-content p {
-            font-size: 1.25rem;
-            color: var(--muted-foreground);
-            margin-bottom: 2.5rem;
-        }
-        
-        .cta-button {
-            background-color: var(--primary);
-            color: white;
-            padding: 0.75rem 2rem;
-            border-radius: var(--radius);
-            font-weight: 600;
-            font-size: 1rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-        }
-        
-        .cta-button:hover {
-            background-color: var(--primary-hover);
-        }
-        
-        /* Footer */
+        /* Lábléc */
         footer {
-            padding: 2rem 0;
+            padding: 1.5rem 0;
             border-top: 1px solid var(--border);
             background-color: rgba(11, 15, 25, 0.95);
+            backdrop-filter: blur(10px);
         }
         
         .footer-content {
@@ -664,7 +703,7 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
         }
         
         .footer-logo-icon {
-            background: linear-gradient(to bottom right, var(--primary), #4f46e5);
+            background: linear-gradient(to bottom right, var(--sports-blue), var(--sports-green));
             width: 1.5rem;
             height: 1.5rem;
             border-radius: 0.375rem;
@@ -680,43 +719,9 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
             color: var(--muted-foreground);
         }
         
-        .social-links {
-            display: flex;
-            gap: 1rem;
-        }
-        
-        .social-link {
-            width: 2rem;
-            height: 2rem;
-            border-radius: 50%;
-            background-color: var(--muted);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background-color 0.2s ease;
-        }
-        
-        .social-link:hover {
-            background-color: var(--primary);
-        }
-        
-        .social-link svg {
-            width: 1rem;
-            height: 1rem;
-            color: var(--foreground);
-        }
-        
         /* Responsive */
         @media (max-width: 768px) {
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
             .matches-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .features-grid {
                 grid-template-columns: 1fr;
             }
             
@@ -728,7 +733,7 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
             
             .footer-content {
                 flex-direction: column;
-                gap: 1.5rem;
+                gap: 1rem;
                 text-align: center;
             }
             
@@ -736,8 +741,9 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
                 font-size: 2rem;
             }
             
-            .cta-content h2 {
-                font-size: 2rem;
+            .actions-row {
+                flex-direction: column;
+                align-items: flex-start;
             }
         }
         
@@ -765,6 +771,8 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
     </style>
 </head>
 <body>
+    <div class="bg-gradient"></div>
+
     <header id="header">
         <div class="container header-content">
             <div class="logo">
@@ -787,37 +795,32 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
                 <a href="#cta" class="nav-item">Indulás</a>
             </div>
             
-            <div class="profile-button">
-                <div class="avatar">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="12" cy="7" r="4"></circle>
-                    </svg>
-                </div>
-                <span>Profil</span>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="m6 9 6 6 6-6"></path>
+            <button class="auth-button">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
                 </svg>
-            </div>
+                Bejelentkezés / Regisztráció
+            </button>
         </div>
     </header>
 
     <main>
         <div class="container">
             <section class="hero">
-                <h1 class="text-gradient">Tippelj Futball <span>Mérkőzésekre</span></h1>
-                <p>Teszteld a futball tudásodat, tippelj mérkőzésekre és versenyezz a legjobbakkal.</p>
+                <h1>Tippelj Labdarúgó <span class="text-blue">Mérkőzésekre</span></h1>
+                <p>Teszteld futballtudásodat, tippelj mérkőzésekre, és versenyezz a legjobb helyezésért.</p>
+                
+                <button class="auth-button">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                    Bejelentkezés / Regisztráció
+                </button>
             </section>
 
             <section class="stats-card">
-                <div class="stats-header">
-                    <h2>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M8 21v-4.94c0-.61.44-1.09 1.002-1.085C10.174 14.99 11 15.89 11 17v4l3.5-2.5L18 21V4a2 2 0 0 0-2-2H8.5a2.5 2.5 0 0 0 0 5H11c.85 0 1.38-.63 1.5-1.5.5-4 6.5-4 7 0 .16 1.35-.3 2.5-1.5 3 .5.5 2 1.5 2 3 0 2-1.5 3-3.5 3-2.11 0-4.5-.33-5.5-.5C10.5 12 9 12.5 9 14v2"></path>
-                        </svg>
-                        Statisztikáid
-                    </h2>
-                </div>
                 <div class="stats-grid">
                     <div class="stat-item">
                         <div class="stat-value">${stats.totalPredictions}</div>
@@ -837,11 +840,19 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
                     </div>
                 </div>
             </section>
-
-            <section id="matches" class="matches-section">
-                <div class="matches-header">
-                    <h2 class="matches-title">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            
+            <section class="actions-row">
+                <div class="action-buttons">
+                    <a href="/html-export" class="action-button action-button-blue">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                        </svg>
+                        HTML Export
+                    </a>
+                    
+                    <a href="/leaderboard" class="action-button action-button-green">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
                             <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
                             <path d="M4 22h16"></path>
@@ -849,17 +860,84 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
                             <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path>
                             <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path>
                         </svg>
-                        Mai mérkőzések
+                        Ranglista
+                    </a>
+                    
+                    <button class="action-button">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22.65 16.26a10.03 10.03 0 0 1-19.33-.06 10.03 10.03 0 0 1 7.21-12.68 10.05 10.05 0 0 1 12.57 7.23 10.03 10.03 0 0 1-.45 5.51z"></path>
+                            <path d="M8 16h.01"></path>
+                            <path d="M12 16h.01"></path>
+                            <path d="M16 16h.01"></path>
+                        </svg>
+                        Értesítések
+                    </button>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="action-button">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M8 3v3a2 2 0 0 1-2 2H3"></path>
+                            <path d="M21 8h-3a2 2 0 0 1-2-2V3"></path>
+                            <path d="M3 16h3a2 2 0 0 1 2 2v3"></path>
+                            <path d="M16 21v-3a2 2 0 0 1 2-2h3"></path>
+                        </svg>
+                        Egyéb műveletek
+                    </button>
+                </div>
+            </section>
+
+            <section id="matches" class="matches-section">
+                <div class="matches-header">
+                    <h2 class="matches-title">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
+                            <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
+                            <path d="M4 22h16"></path>
+                            <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path>
+                            <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path>
+                            <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path>
+                        </svg>
+                        Mai Mérkőzések
                     </h2>
                     
-                    <div class="date-display">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect>
-                            <line x1="16" x2="16" y1="2" y2="6"></line>
-                            <line x1="8" x2="8" y1="2" y2="6"></line>
-                            <line x1="3" x2="21" y1="10" y2="10"></line>
-                        </svg>
-                        ${new Date().toLocaleDateString('hu-HU', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+                    <div class="date-controls">
+                        <button class="date-button">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="m15 18-6-6 6-6"></path>
+                            </svg>
+                        </button>
+                        
+                        <div class="date-display">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect>
+                                <line x1="16" x2="16" y1="2" y2="6"></line>
+                                <line x1="8" x2="8" y1="2" y2="6"></line>
+                                <line x1="3" x2="21" y1="10" y2="10"></line>
+                            </svg>
+                            ${new Date().toLocaleDateString('hu-HU', { weekday: 'long', month: 'long', day: 'numeric' })}
+                        </div>
+                        
+                        <button class="date-button">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="m9 18 6-6-6-6"></path>
+                            </svg>
+                        </button>
+                        
+                        <div class="date-display">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                            GMT
+                        </div>
+                        
+                        <button class="action-button">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                            </svg>
+                            Szűrés
+                        </button>
                     </div>
                 </div>
 
@@ -926,60 +1004,6 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
                     `).join('')}
                 </div>
             </section>
-
-            <section id="features" class="features-section">
-                <div class="features-header">
-                    <h2 class="text-gradient">Miért válaszd a WinMix.hu-t?</h2>
-                    <p>Tippelj saját tempódban, elemezd a statisztikákat és versenyezz másokkal a legtöbb pontért.</p>
-                </div>
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
-                                <circle cx="9" cy="7" r="4"></circle>
-                                <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
-                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                            </svg>
-                        </div>
-                        <h3 class="feature-title">Versenyezz barátaiddal</h3>
-                        <p class="feature-description">Hozz létre saját ligákat, hívd meg barátaidat és versenyezz azonnali ranglistákkal.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M12 2v20"></path>
-                                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-                            </svg>
-                        </div>
-                        <h3 class="feature-title">Nyereményrendszer</h3>
-                        <p class="feature-description">Gyűjts pontokat helyes tippjeiddel és válts be őket értékes nyereményekre.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
-                                <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
-                            </svg>
-                        </div>
-                        <h3 class="feature-title">Részletes elemzések</h3>
-                        <p class="feature-description">Ismerd meg a csapatok formáját, egymás elleni mérkőzéseit és az aktuális bajnokságot.</p>
-                    </div>
-                </div>
-            </section>
-
-            <section id="cta" class="cta-section">
-                <div class="cta-content">
-                    <h2 class="text-gradient">Készen állsz a tippelésre?</h2>
-                    <p>Regisztrálj most és kezdj el tippelni kedvenc futball mérkőzéseidre. Szerezz pontokat és mutasd meg tudásodat!</p>
-                    <button class="cta-button">
-                        Regisztráció
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="m9 18 6-6-6-6"></path>
-                        </svg>
-                    </button>
-                </div>
-            </section>
         </div>
     </main>
 
@@ -999,34 +1023,14 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
                 <span>Win<span style="color: #3b82f6;">Mix.hu</span></span>
             </div>
             
-            <div class="social-links">
-                <a href="#" class="social-link">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
-                    </svg>
-                </a>
-                <a href="#" class="social-link">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
-                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                        <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
-                    </svg>
-                </a>
-                <a href="#" class="social-link">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path>
-                    </svg>
-                </a>
-            </div>
-            
-            <div class="copyright">
+            <p class="copyright">
                 &copy; ${new Date().getFullYear()} WinMix.hu. Minden jog fenntartva.
-            </div>
+            </p>
         </div>
     </footer>
 
     <script>
-        // Simple header scroll effect
+        // Egyszerű header scroll hatás
         const header = document.getElementById('header');
         window.addEventListener('scroll', () => {
             if (window.scrollY > 10) {
@@ -1036,7 +1040,7 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
             }
         });
         
-        // Add click handlers for match buttons
+        // Mérkőzés gombok kezelése
         const matchButtons = document.querySelectorAll('.match-button');
         matchButtons.forEach(button => {
             button.addEventListener('click', function() {
@@ -1049,25 +1053,22 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
                     btn.style.transform = 'scale(1)';
                 });
                 
-                // Highlight selected button
+                // Kiemelt gomb
                 this.style.opacity = '1';
                 this.style.transform = 'scale(1.05)';
                 
-                // Simulate saving the prediction
+                // Tipp mentés szimuláció
                 const prediction = this.classList.contains('home-button') ? 'Hazai' : 
                                   this.classList.contains('draw-button') ? 'Döntetlen' : 'Vendég';
                                   
-                // You would typically send this to a server
-                console.log('Prediction saved:', prediction);
-                
-                // Show feedback to user
+                // Felhasználói visszajelzés
                 const toast = document.createElement('div');
                 toast.textContent = 'Tipp elmentve: ' + prediction;
                 toast.style.position = 'fixed';
                 toast.style.bottom = '20px';
                 toast.style.right = '20px';
                 toast.style.padding = '10px 20px';
-                toast.style.backgroundColor = 'var(--primary)';
+                toast.style.backgroundColor = 'var(--sports-blue)';
                 toast.style.color = 'white';
                 toast.style.borderRadius = 'var(--radius)';
                 toast.style.zIndex = '1000';
@@ -1089,3 +1090,4 @@ export const generateHtmlContent = (matches: any[], teams: any[], stats: any): s
 </body>
 </html>`;
 };
+
