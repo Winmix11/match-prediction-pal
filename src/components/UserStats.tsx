@@ -47,8 +47,11 @@ const UserStats = () => {
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-semibold text-white">Your Statistics</h2>
         
-        <div className="flex items-center gap-2 bg-muted/50 px-3 py-1.5 rounded-md">
-          <Trophy className="h-4 w-4 text-blue-400" />
+        <div className={cn(
+          "flex items-center gap-2 bg-muted/50 px-3 py-1.5 rounded-md",
+          userStats.points > 0 ? "bg-gradient-to-r from-amber-500/20 to-amber-600/10 border border-amber-500/20" : ""
+        )}>
+          <Trophy className={cn("h-4 w-4", userStats.points > 0 ? "text-amber-400" : "text-blue-400")} />
           <span className="text-sm font-medium text-white">{userStats.points} Points</span>
         </div>
       </div>
