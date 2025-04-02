@@ -1,13 +1,16 @@
 
 import React, { useEffect, useState } from 'react';
 import { useAppStore } from '@/lib/store';
-import { Trophy, Timer, Calendar, ChevronLeft, ChevronRight, FileText, Filter } from 'lucide-react';
+import { Trophy, Timer, Calendar, ChevronLeft, ChevronRight, FileText, Filter, Bell, User } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Header from '@/components/Header';
 import MatchCard from '@/components/MatchCard';
 import MatchCardSkeleton from '@/components/MatchCardSkeleton';
 import UserStats from '@/components/UserStats';
 import ActionsDropdown from '@/components/ActionsDropdown';
+import NotificationCenter from '@/components/NotificationCenter';
+import MatchFilters from '@/components/MatchFilters';
+import AuthModal from '@/components/AuthModal';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -20,32 +23,50 @@ const Index = () => {
   const [showAnimation, setShowAnimation] = useState(false);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [isLoading, setIsLoading] = useState(true);
+  const [authModalOpen, setAuthModalOpen] = useState(false);
   const { toast } = useToast();
   const isMobile = useIsMobile();
+  
+  const [filters, setFilters] = useState({
+    leagues: [],
+    dateRange: 'today',
+    teamSearch: '',
+  });
+  
+  const handleFilterChange = (newFilters: any) => {
+    setFilters(newFilters);
+    setIsLoading(true);
+    // Simulate filter application
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 800);
+  };
   
   useEffect(() => {
     // Trigger animations after component mounts
     setShowAnimation(true);
     
-    // Show welcome toast
+    // Show welcome toast for new users
     if (userStats.totalPredictions === 0) {
-      toast({
-        title: "Welcome to WinMix.hu",
-        description: "Make your first prediction to earn points!",
-        duration: 5000,
-      });
+      setTimeout(() => {
+        toast({
+          title: "Üdvözöljük a WinMix.hu oldalon!",
+          description: "Készítsen tippeket és nyerjen pontokat!",
+          duration: 5000,
+        });
+      }, 1500);
     }
     
     // Simulate loading
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 1000);
+    }, 1500);
     
     return () => clearTimeout(timer);
   }, [toast, userStats.totalPredictions]);
   
   const formatDate = (date: Date) => {
-    return date.toLocaleDateString('en-US', {
+    return date.toLocaleDateString('hu-HU', {
       weekday: isMobile ? 'short' : 'long',
       month: isMobile ? 'short' : 'long',
       day: 'numeric'
@@ -70,6 +91,8 @@ const Index = () => {
       
       <Header />
       
+      <AuthModal open={authModalOpen} onOpenChange={setAuthModalOpen} />
+      
       <main className="container mx-auto px-4 pt-28 md:pt-32 pb-16 relative z-10">
         <div className="mb-12 md:mb-16">
           <h1 
@@ -78,7 +101,7 @@ const Index = () => {
               showAnimation ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
             )}
           >
-            Predict Football <span className="text-sports-blue">Matches</span>
+            Tippelj Labdarúgó <span className="text-sports-blue">Mérkőzésekre</span>
           </h1>
           <p 
             className={cn(
@@ -86,8 +109,23 @@ const Index = () => {
               showAnimation ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
             )}
           >
-            Test your football knowledge, make predictions, and compete for the top spot.
+            Teszteld futballtudásodat, tippelj mérkőzésekre, és versenyezz a legjobb helyezésért.
           </p>
+          
+          <div 
+            className={cn(
+              "flex justify-center mt-6 transition-all duration-700 delay-150",
+              showAnimation ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+            )}
+          >
+            <Button 
+              className="bg-sports-blue hover:bg-sports-blue-dark text-white font-medium"
+              onClick={() => setAuthModalOpen(true)}
+            >
+              <User className="mr-2 h-4 w-4" />
+              Bejelentkezés / Regisztráció
+            </Button>
+          </div>
         </div>
         
         <div 
@@ -113,10 +151,14 @@ const Index = () => {
               </Button>
             </Link>
             
-            <Button variant="outline" size="sm" className="flex items-center gap-2 bg-white/5 text-sports-green border-sports-green/20 hover:bg-sports-green/10">
-              <Filter className="h-4 w-4" />
-              Filter
-            </Button>
+            <Link to="/leaderboard">
+              <Button variant="outline" size="sm" className="flex items-center gap-2 bg-white/5 text-sports-green border-sports-green/20 hover:bg-sports-green/10">
+                <Trophy className="h-4 w-4" />
+                Ranglista
+              </Button>
+            </Link>
+            
+            <NotificationCenter />
           </div>
           
           <div 
@@ -138,7 +180,7 @@ const Index = () => {
           >
             <h2 className="text-xl font-semibold text-white flex items-center gap-2">
               <Trophy className="h-5 w-5 text-sports-accent" />
-              Today's Matches
+              Mai Mérkőzések
             </h2>
             
             <div className="flex items-center gap-2">
@@ -167,11 +209,13 @@ const Index = () => {
                 <Timer className="h-4 w-4 text-sports-blue" />
                 <span className="text-xs font-medium text-white">GMT</span>
               </div>
+              
+              <MatchFilters onChange={handleFilterChange} />
             </div>
           </div>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           {isLoading ? (
             Array(3).fill(0).map((_, index) => (
               <div 
@@ -219,7 +263,7 @@ const Index = () => {
             </div>
             
             <p className="text-xs text-gray-500">
-              &copy; {new Date().getFullYear()} WinMix.hu. All rights reserved.
+              &copy; {new Date().getFullYear()} WinMix.hu. Minden jog fenntartva.
             </p>
           </div>
         </div>
