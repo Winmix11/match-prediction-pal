@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Match } from '@/lib/types';
-import MatchCard from '@/components/MatchCard';
+import MatchCard from '@/components/match-card/MatchCard';
 import MatchCardSkeleton from '@/components/MatchCardSkeleton';
 import { cn } from '@/lib/utils';
 
