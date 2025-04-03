@@ -2,6 +2,7 @@
 import React from "react";
 import { Team } from "@/lib/types";
 import TeamSelector from "@/components/TeamSelector";
+import { useToast } from "@/hooks/use-toast";
 
 type SelectableTeamsSectionProps = {
   homeTeam?: Team;
@@ -24,6 +25,19 @@ const SelectableTeamsSection: React.FC<SelectableTeamsSectionProps> = ({
   onAwayTeamToggle,
   onTeamSelect,
 }) => {
+  const { toast } = useToast();
+
+  const handleTeamSelect = (team: Team, type: "home" | "away") => {
+    onTeamSelect(team, type);
+    
+    // Show toast when team is selected
+    toast({
+      title: "Csapat kiválasztva",
+      description: `${team.name} csapat kiválasztva ${type === "home" ? "hazai" : "vendég"} csapatként.`,
+      duration: 3000,
+    });
+  };
+
   return (
     <div className="space-y-6">
       <div className="text-center mb-2">
@@ -39,7 +53,7 @@ const SelectableTeamsSection: React.FC<SelectableTeamsSectionProps> = ({
             allTeams={allTeams}
             isOpen={homeTeamDropdownOpen}
             onToggle={onHomeTeamToggle}
-            onSelect={(team) => onTeamSelect(team, "home")}
+            onSelect={(team) => handleTeamSelect(team, "home")}
             type="home"
           />
         </div>
@@ -55,7 +69,7 @@ const SelectableTeamsSection: React.FC<SelectableTeamsSectionProps> = ({
             allTeams={allTeams}
             isOpen={awayTeamDropdownOpen}
             onToggle={onAwayTeamToggle}
-            onSelect={(team) => onTeamSelect(team, "away")}
+            onSelect={(team) => handleTeamSelect(team, "away")}
             type="away"
           />
         </div>

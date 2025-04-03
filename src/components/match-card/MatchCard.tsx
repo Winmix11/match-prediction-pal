@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAppStore } from "@/lib/store";
 import { Team, Match } from "@/lib/types";
 import { useToast } from "@/hooks/use-toast";
@@ -37,23 +37,39 @@ const MatchCard = ({ match }: MatchCardProps) => {
   // Toast
   const { toast } = useToast();
 
+  // Reset prediction when match changes
+  useEffect(() => {
+    setSelectedPrediction(null);
+  }, [id]);
+
   const canPredict = homeTeam && awayTeam && !selectableTeams;
 
   const handleTeamSelect = (team: Team, type: "home" | "away") => {
-    updateMatch(id, {
-      [type === "home" ? "homeTeam" : "awayTeam"]: team
-    });
-    
+    // Close any open dropdown before updating
     if (type === "home") {
       setHomeTeamDropdownOpen(false);
     } else {
       setAwayTeamDropdownOpen(false);
     }
-
+    
+    // Update match with selected team
+    updateMatch(id, {
+      [type === "home" ? "homeTeam" : "awayTeam"]: team
+    });
+    
     // Show toast when team is selected
     toast({
       title: "Csapat kiválasztva",
       description: `${team.name} csapat kiválasztva ${type === "home" ? "hazai" : "vendég"} csapatként.`,
+      duration: 3000,
+    });
+  };
+
+  const onSelectPrediction = (prediction: string) => {
+    setSelectedPrediction(prediction);
+    toast({
+      title: "Tipp kiválasztva",
+      description: `${prediction === 'home' ? homeTeam?.name : prediction === 'away' ? awayTeam?.name : 'Döntetlen'} tipp kiválasztva.`,
       duration: 3000,
     });
   };
@@ -122,7 +138,7 @@ const MatchCard = ({ match }: MatchCardProps) => {
             awayTeam={awayTeam}
             score={score}
             selectedPrediction={selectedPrediction}
-            onSelectPrediction={setSelectedPrediction}
+            onSelectPrediction={onSelectPrediction}
           />
         )}
 
@@ -133,8 +149,14 @@ const MatchCard = ({ match }: MatchCardProps) => {
             homeTeamDropdownOpen={homeTeamDropdownOpen}
             awayTeamDropdownOpen={awayTeamDropdownOpen}
             allTeams={allTeams}
-            onHomeTeamToggle={() => setHomeTeamDropdownOpen(!homeTeamDropdownOpen)}
-            onAwayTeamToggle={() => setAwayTeamDropdownOpen(!awayTeamDropdownOpen)}
+            onHomeTeamToggle={() => {
+              setHomeTeamDropdownOpen(!homeTeamDropdownOpen);
+              setAwayTeamDropdownOpen(false);
+            }}
+            onAwayTeamToggle={() => {
+              setAwayTeamDropdownOpen(!awayTeamDropdownOpen);
+              setHomeTeamDropdownOpen(false);
+            }}
             onTeamSelect={handleTeamSelect}
           />
         )}
@@ -145,7 +167,7 @@ const MatchCard = ({ match }: MatchCardProps) => {
             awayTeamName={awayTeam?.name}
             selectedPrediction={selectedPrediction}
             existingPrediction={existingPrediction}
-            onSelectPrediction={setSelectedPrediction}
+            onSelectPrediction={onSelectPrediction}
           />
         )}
       </div>

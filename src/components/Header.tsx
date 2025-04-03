@@ -3,11 +3,14 @@ import React, { useEffect, useState } from 'react';
 import { Trophy, Bell, User, ChevronDown } from 'lucide-react';
 import { useAppStore } from '@/lib/store';
 import { cn } from '@/lib/utils';
+import { useToast } from '@/hooks/use-toast';
 
 const Header = () => {
   const userStats = useAppStore((state) => state.userStats);
   const [scrolled, setScrolled] = useState(false);
   const [animationComplete, setAnimationComplete] = useState(false);
+  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -28,6 +31,15 @@ const Header = () => {
 
     return () => clearTimeout(timer);
   }, []);
+
+  const handleProfileClick = () => {
+    setProfileDropdownOpen(!profileDropdownOpen);
+    toast({
+      title: "Profil funkció",
+      description: "A profilkezelő funkciók hamarosan elérhetőek lesznek",
+      duration: 3000,
+    });
+  };
 
   return (
     <header 
@@ -75,13 +87,37 @@ const Header = () => {
               <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-blue-500"></span>
             </button>
             
-            <button className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-muted/50 hover:bg-muted/80 transition-colors duration-200">
-              <div className="h-5 w-5 rounded-full bg-blue-600 flex items-center justify-center">
-                <User className="h-3 w-3 text-white" />
-              </div>
-              <span className="text-xs font-medium text-white">Profile</span>
-              <ChevronDown className="h-3 w-3 text-white opacity-60" />
-            </button>
+            <div className="relative">
+              <button 
+                className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-muted/50 hover:bg-muted/80 transition-colors duration-200"
+                onClick={handleProfileClick}
+              >
+                <div className="h-5 w-5 rounded-full bg-blue-600 flex items-center justify-center">
+                  <User className="h-3 w-3 text-white" />
+                </div>
+                <span className="text-xs font-medium text-white">Profile</span>
+                <ChevronDown className={cn(
+                  "h-3 w-3 text-white opacity-60 transition-transform",
+                  profileDropdownOpen ? "rotate-180" : ""
+                )} />
+              </button>
+              
+              {profileDropdownOpen && (
+                <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-background border border-gray-700 z-50">
+                  <div className="py-1">
+                    <button className="w-full text-left block px-4 py-2 text-sm text-white hover:bg-muted/50">
+                      My Profile
+                    </button>
+                    <button className="w-full text-left block px-4 py-2 text-sm text-white hover:bg-muted/50">
+                      Settings
+                    </button>
+                    <button className="w-full text-left block px-4 py-2 text-sm text-white hover:bg-muted/50">
+                      Logout
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
