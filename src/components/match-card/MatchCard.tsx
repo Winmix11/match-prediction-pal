@@ -26,7 +26,6 @@ const MatchCard = ({ match }: MatchCardProps) => {
 
   // Store hooks
   const addPrediction = useAppStore((state) => state.addPrediction);
-  const updateUserStats = useAppStore((state) => state.updateUserStats);
   const allTeams = useAppStore((state) => state.allTeams);
   const updateMatch = useAppStore((state) => state.updateMatch);
   const predictions = useAppStore((state) => state.predictions);
@@ -50,6 +49,13 @@ const MatchCard = ({ match }: MatchCardProps) => {
     } else {
       setAwayTeamDropdownOpen(false);
     }
+
+    // Show toast when team is selected
+    toast({
+      title: "Csapat kiválasztva",
+      description: `${team.name} csapat kiválasztva ${type === "home" ? "hazai" : "vendég"} csapatként.`,
+      duration: 3000,
+    });
   };
 
   // Submit prediction
@@ -69,8 +75,8 @@ const MatchCard = ({ match }: MatchCardProps) => {
 
       // Show toast notification
       toast({
-        title: "Prediction Saved",
-        description: `Your prediction for ${homeTeam.name} vs ${awayTeam.name} has been saved.`,
+        title: "Tipp elmentve",
+        description: `A tipped a(z) ${homeTeam.name} vs ${awayTeam.name} mérkőzésre elmentve.`,
         duration: 3000,
       });
 
@@ -99,8 +105,8 @@ const MatchCard = ({ match }: MatchCardProps) => {
     
     // Show toast with result
     toast({
-      title: "Match Finished!",
-      description: `Final score: ${homeTeam?.name} ${homeScore} - ${awayScore} ${awayTeam?.name}`,
+      title: "Mérkőzés befejeződött!",
+      description: `Végeredmény: ${homeTeam?.name} ${homeScore} - ${awayScore} ${awayTeam?.name}`,
       duration: 5000,
     });
   };
@@ -110,13 +116,15 @@ const MatchCard = ({ match }: MatchCardProps) => {
       <MatchHeader id={id} time={time} timeGMT={timeGMT} startsIn={startsIn} />
 
       <div className="space-y-5">
-        <TeamsSection 
-          homeTeam={homeTeam}
-          awayTeam={awayTeam}
-          score={score}
-          selectedPrediction={selectedPrediction}
-          onSelectPrediction={setSelectedPrediction}
-        />
+        {!selectableTeams && (
+          <TeamsSection 
+            homeTeam={homeTeam}
+            awayTeam={awayTeam}
+            score={score}
+            selectedPrediction={selectedPrediction}
+            onSelectPrediction={setSelectedPrediction}
+          />
+        )}
 
         {selectableTeams && (
           <SelectableTeamsSection 

@@ -25,9 +25,9 @@ const DemoSimulator: React.FC<DemoSimulatorProps> = ({
     <div className="mt-3 text-center">
       <button 
         onClick={() => onSimulateResult(matchId)}
-        className="text-xs text-sports-blue hover:text-sports-blue-dark transition-colors"
+        className="text-sm bg-sports-blue/20 hover:bg-sports-blue/30 text-sports-blue hover:text-white px-3 py-1 rounded-full transition-all duration-200"
       >
-        (Demo: Simulate Match Result)
+        Demo: Szimuláció
       </button>
     </div>
   );
