@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import Leaderboard from "./pages/Leaderboard";
 import NotFound from "./pages/NotFound";
 import HtmlExport from "./pages/HtmlExport";
+import MatchStats from "./pages/MatchStats";
 
 const queryClient = new QueryClient();
 
@@ -21,6 +22,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/html-export" element={<HtmlExport />} />
+          <Route path="/matchstats" element={<MatchStats />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
